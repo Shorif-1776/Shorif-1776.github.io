@@ -1,0 +1,91 @@
+# Peer-reviewed articles, newest first. Rendered by publications.md.
+# Citation counts are deliberately left out: they change over time.
+# `abstract` is a short summary shown in the hover flyout.
+
+- title: "A systematic review and probabilistic meta-analysis of health risks and disability-adjusted life years (DALYs) associated with heavy metals in global drinking water: a continental comparison"
+  authors: Md Jahim Uddin Shorif, Shakhawat Chowdhury, Abdullah Al-Mamun, Syed Masiur Rahman
+  year: 2026
+  journal: Reviews on Environmental Health
+  publisher: De Gruyter Brill
+  # Add `url:` and `doi:` here once the DOI is available.
+  abstract: >-
+    A systematic review and probabilistic meta-analysis of heavy metals in drinking water worldwide,
+    comparing cancer and non-cancer risks and the loss of disability-adjusted life years across continents.
+
+- title: "Max-stable process framework for intensity‒duration‒frequency analysis and climate projections in monsoon Bangladesh"
+  authors: Norma Wihdatun Nikmah, Md Jahim Uddin Shorif, Ahmed M. Al-Areeq, Shakhawat Chowdhury
+  year: 2026
+  date: 14 March 2026
+  journal: Geomatics, Natural Hazards and Risk
+  volume: 17
+  pages: "2638527"
+  publisher: Taylor & Francis
+  url: https://doi.org/10.1080/19475705.2026.2638527
+  doi: 10.1080/19475705.2026.2638527
+  abstract: >-
+    A max-stable process framework for extreme rainfall in Bangladesh that screened more than 2,500 model
+    combinations across 35 stations, five seasons and durations from 1 to 48 hours. Brown-Resnick processes
+    fit the southwest monsoon best and Extremal-t models the winter, and local geography explained extremes
+    better than large-scale teleconnections. Under SSP2-4.5 (2025–2050), rare 100-year events are projected
+    to intensify by about 37% while frequent 2-year events weaken.
+
+- title: "Reviews on Inorganic Arsenic in Rice Grains: Assessment of Regional Variation, Health Risk and Mitigation Strategies"
+  authors: Md Jahim Uddin Shorif, Md Atiqur Rahman, Shakhawat Chowdhury
+  year: 2026
+  date: January 2026
+  journal: Arabian Journal for Science and Engineering
+  volume: 51
+  pages: 469–487
+  publisher: Springer Nature
+  url: https://doi.org/10.1007/s13369-025-10920-5
+  doi: 10.1007/s13369-025-10920-5
+  abstract: >-
+    A review of arsenic uptake by rice through silicon and phosphate pathways and of inorganic arsenic
+    levels in rice across continents. Probabilistic risk estimates put cancer risk highest in Asia, and the
+    review compares mitigation options including water management, soil amendments, biochar,
+    nanoparticles and genetic approaches.
+
+- title: "Heavy metal contamination in Asian drinking water: a regional assessment of health risks and disability-adjusted life years (DALYs)"
+  authors: Md Jahim Uddin Shorif, Md Atiqur Rahman, Shakhawat Chowdhury
+  year: 2026
+  journal: Human and Ecological Risk Assessment
+  volume: 32
+  pages: 295–325
+  publisher: Taylor & Francis
+  url: https://doi.org/10.1080/10807039.2025.2586579
+  doi: 10.1080/10807039.2025.2586579
+  abstract: >-
+    A regional assessment of inorganic arsenic, lead, mercury, cadmium, chromium and nickel in drinking
+    water across East, Southeast, South, Central and West Asia. Cancer risk was highest in Southeast Asia and
+    population-adjusted DALYs highest in South Asia, with lung cancer the main contributor in every region.
+
+- title: "Probabilistic Health Risk and Loss of Disability-Adjusted Life Years for N-Nitrosodimethylamine in Asian Drinking Water: Assessment and Control Strategies"
+  authors: Md Atiqur Rahman, Md Jahim Uddin Shorif, Shakhawat Chowdhury
+  year: 2025
+  date: September 2025
+  journal: Water Environment Research
+  volume: 97
+  pages: e70178
+  publisher: Wiley
+  url: https://doi.org/10.1002/wer.70178
+  doi: 10.1002/wer.70178
+  abstract: >-
+    A probabilistic, multi-pathway assessment of NDMA in Asian drinking water covering ingestion, inhalation
+    and dermal contact. The average lifetime cancer risk was 3.42 × 10⁻⁵, about 34 times the US EPA
+    benchmark, and the study estimates DALY losses and economic burden from bladder and liver cancers.
+
+- title: "GIS based geostatistical modelling and trends analysis of groundwater quality for suitable uses in Dhaka division"
+  authors: Md Rezaul Karim, Md Atif Arham, Md Jahim Uddin Shorif, Amimul Ahsan, Nadhir Al-Ansari
+  year: 2024
+  date: 29 July 2024
+  journal: Scientific Reports
+  volume: 14
+  pages: "17449"
+  publisher: Nature Portfolio
+  url: https://doi.org/10.1038/s41598-024-66567-z
+  doi: 10.1038/s41598-024-66567-z
+  abstract: >-
+    Thirty-five years of groundwater quality data from 18 stations in Dhaka division, analyzed with
+    Mann-Kendall and Sen's slope trend tests, GIS mapping and Piper diagrams. The study found strong links
+    between salinity and hardness parameters, salinity problems at Madaripur Sadar and bicarbonate-dominated
+    water at all stations.

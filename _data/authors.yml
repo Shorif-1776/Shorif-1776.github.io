@@ -1,0 +1,19 @@
+# The primary author of this site.
+# Must be the same as `author` in `_config.yml`.
+shorif:
+  name:              Md. Jahim Uddin Shorif
+  email:             shorif1776@gmail.com
+
+  # Used at the bottom of each page and at the top of the `about` layout
+  about:             |
+    I'm a civil and environmental engineer studying how contaminants in drinking water affect
+    human health, and how treatment and resource recovery can reduce that burden.
+    Based in Dhahran, Saudi Arabia, and open to PhD opportunities.
+
+  # Social media icons in sidebar
+  social:
+    linkedin:        shorif1776
+    google_scholar:  rwT-CtkAAAAJ
+    researchgate:    Mdjahim-Uddin-Shorif
+    email:           shorif1776@gmail.com
+    cv:              /assets/Md-Jahim-Uddin-Shorif-CV.pdf

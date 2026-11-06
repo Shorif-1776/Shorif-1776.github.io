@@ -1,0 +1,207 @@
+<!-- Add HTML tags here to be included at the end of the body. -->
+<script src="{{ '/assets/nodes.js-master/js/nodes.js' | relative_url }}"></script>
+<script>
+  /* Animated nodes.js background behind the sidebar, replacing a background image. */
+  (function () {
+    var bg = document.querySelector('#_sidebar .sidebar-bg');
+    if (!bg || typeof NodesJs !== 'function') return;
+
+    var canvas = document.createElement('canvas');
+    canvas.id = 'sidebar-nodes';
+    bg.appendChild(canvas);
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var nodes = new NodesJs({
+      id: 'sidebar-nodes',
+      width: window.innerWidth,
+      height: window.innerHeight,
+      particleSize: 2,
+      lineSize: 1,
+      particleColor: [205, 205, 200, 0.35],
+      lineColor: [200, 200, 195],
+      backgroundFrom: [30, 30, 30],
+      backgroundTo: [37, 37, 38],
+      backgroundDuration: 4000,
+      nobg: false,
+      number: window.hasOwnProperty('orientation') ? 30 : 100,
+      speed: reduceMotion ? 0 : 20,
+      pointerCircleRadius: 150
+    });
+
+    window.addEventListener('resize', function () {
+      nodes.setWidth(window.innerWidth);
+      nodes.setHeight(window.innerHeight);
+    });
+
+    /* nodes.js uses viewport mouse coordinates, so keep the canvas origin at the viewport's */
+    /* top-left whether the sidebar is the full-screen cover or the narrow strip. */
+    (function align() {
+      var left = bg.getBoundingClientRect().left;
+      canvas.style.transform = 'translateX(' + (-left) + 'px)';
+      requestAnimationFrame(align);
+    })();
+  })();
+</script>
+<script>
+  /* Page-to-page scrolling: keep scrolling past the bottom of a page to open the next sidebar */
+  /* menu page; keep scrolling up at the top to go back to the previous one (landing at its bottom). */
+  (function () {
+    var PUSH = 260;      /* how much extra scrolling past the edge triggers a page change */
+    var COOLDOWN = 700;  /* ms to ignore input after a page change */
+    var pushState = document.getElementById('_pushState');
+    var accum = 0, resetTimer = null, busyUntil = 0, landAtBottom = false, touchY = null;
+
+    function pages() {
+      var list = ['/'];
+      document.querySelectorAll('#_sidebar .sidebar-nav-item[href]').forEach(function (a) {
+        var href = a.getAttribute('href');
+        if (href.indexOf('/assets/') !== 0 && list.indexOf(href) < 0) list.push(href);
+      });
+      return list;
+    }
+
+    function currentPath() {
+      var path = location.pathname.replace(/index\.html$/, '');
+      return path.endsWith('/') ? path : path.replace(/\.html$/, '') + '/';
+    }
+
+    function coverOpen() {
+      var drawer = document.getElementById('_drawer');
+      return drawer && drawer.classList.contains('cover') && drawer.opened;
+    }
+
+    function atBottom() {
+      return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    }
+
+    /* On Home, scrolling up at the top brings the full-screen cover sidebar back. */
+    function openCover() {
+      var drawer = document.getElementById('_drawer');
+      if (!drawer || drawer.opened) return;
+      busyUntil = Date.now() + COOLDOWN;
+      drawer.classList.add('cover');
+      /* The theme removes its swipe-hint hand icon when the cover first closes; put it back. */
+      var hint = document.getElementById('_hrefSwipeSVG');
+      var sidebar = document.getElementById('_sidebar');
+      if (hint && sidebar && !document.getElementById('_swipe')) {
+        var img = document.createElement('img');
+        img.id = '_swipe';
+        img.src = hint.href;
+        img.alt = 'Swipe image';
+        img.addEventListener('click', function () { drawer.close ? drawer.close() : (drawer.opened = false); });
+        sidebar.appendChild(img);
+      }
+      if (typeof drawer.open === 'function') drawer.open(); else drawer.opened = true;
+    }
+
+    function go(step) {
+      if (step < 0 && currentPath() === '/') return openCover();
+      var list = pages();
+      var target = list[list.indexOf(currentPath()) + step];
+      if (!target) return;
+      var link = document.querySelector('#_sidebar a[href="' + target + '"]');
+      if (!link) return;
+      busyUntil = Date.now() + COOLDOWN;
+      landAtBottom = step < 0;
+      link.click();
+    }
+
+    function push(delta) {
+      /* A page change needs a fresh gesture: keep blocking while the same scroll continues. */
+      if (Date.now() < busyUntil) { busyUntil = Math.max(busyUntil, Date.now() + 400); return; }
+      if (coverOpen()) return;
+      var edge = delta > 0 ? atBottom() : window.scrollY <= 0;
+      if (!edge || (accum && Math.sign(accum) !== Math.sign(delta))) accum = 0;
+      if (!edge) return;
+      accum += delta;
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(function () { accum = 0; }, 400);
+      if (Math.abs(accum) >= PUSH) {
+        var step = accum > 0 ? 1 : -1;
+        accum = 0;
+        go(step);
+      }
+    }
+
+    window.addEventListener('wheel', function (e) { push(e.deltaY); }, { passive: true });
+    /* On touch screens a vertical swipe on the full-screen cover closes it, like the theme's
+       scroll-down close for mouse wheels; mostly horizontal swipes are left to the theme. */
+    function closeCover() {
+      var drawer = document.getElementById('_drawer');
+      busyUntil = Date.now() + COOLDOWN;
+      if (typeof drawer.close === 'function') drawer.close(); else drawer.opened = false;
+    }
+
+    var touchX = null;
+    window.addEventListener('touchstart', function (e) {
+      touchY = e.touches[0].clientY;
+      touchX = e.touches[0].clientX;
+    }, { passive: true, capture: true });
+    window.addEventListener('touchend', function (e) {
+      if (touchY == null) return;
+      var dy = touchY - e.changedTouches[0].clientY;
+      var dx = touchX - e.changedTouches[0].clientX;
+      touchY = touchX = null;
+      if (coverOpen()) {
+        if (Math.abs(dy) > 60 && Math.abs(dy) > Math.abs(dx)) closeCover();
+        return;
+      }
+      if (Math.abs(dy) > 120) push(dy > 0 ? PUSH : -PUSH);
+    }, { passive: true, capture: true });
+
+    if (pushState) {
+      pushState.addEventListener('hy-push-state-after', function () {
+        busyUntil = Date.now() + COOLDOWN;
+        if (!landAtBottom) return;
+        landAtBottom = false;
+        setTimeout(function () {
+          window.scrollTo(0, document.documentElement.scrollHeight);
+        }, 50);
+      });
+    }
+  })();
+</script>
+<script>
+  /* External links and PDFs (e.g. the CV) open in a new tab, on every page the theme loads. */
+  (function () {
+    function mark() {
+      document.querySelectorAll('a[href]').forEach(function (a) {
+        var external = /^https?:$/.test(a.protocol) && a.host !== location.host;
+        if (external || /\.pdf$/i.test(a.pathname)) {
+          a.target = '_blank';
+          a.rel = 'noopener';
+        }
+      });
+    }
+    mark();
+    var pushState = document.getElementById('_pushState');
+    if (pushState) pushState.addEventListener('hy-push-state-after', mark);
+  })();
+</script>
+<script>
+  /* Sidebar name: --cover-t follows the full-screen cover's open progress (1 open, 0 closed), every
+     frame of the slide, so the first line of the name grows and shrinks with it instead of jumping. */
+  (function () {
+    var drawer = document.getElementById('_drawer');
+    if (!drawer) return;
+    function set(t) {
+      drawer.style.setProperty('--cover-t', drawer.classList.contains('cover') ? t : 0);
+    }
+    set(drawer.hasAttribute('opened') ? 1 : 0);
+    drawer.addEventListener('hy-drawer-move', function (e) { set(e.detail.opacity); });
+    drawer.addEventListener('hy-drawer-transitioned', function (e) { set(e.detail ? 1 : 0); });
+  })();
+</script>
+
+<script>
+  /* Footer copyright shows the visitor's current year (the build year is the no-JS fallback). */
+  (function () {
+    function update() {
+      var year = String(new Date().getFullYear());
+      document.querySelectorAll('.copyright-year').forEach(function (el) { el.textContent = year; });
+    }
+    update();
+    var pushState = document.getElementById('_pushState');
+    if (pushState) pushState.addEventListener('hy-push-state-after', update);
+  })();
+</script>
